@@ -1,0 +1,166 @@
+--------------------------First
+
+
+
+import './index.css'
+import Card from './components/Card';
+import { useState } from 'react';
+
+function App() {
+  const [count, setCount] = useState(0)
+  const heelo = () => setCount(prev => prev + 1)
+  const hello = () => {
+    setCount((prev) => { return prev + 1 })
+    setCount((prev) => { return prev + 1 })
+    setCount((prev) => { return prev + 1 })
+    setCount((prev) => { return prev + 1 })
+
+  }
+  const name = ['Sonu', 'Jina', 'Kina', 'Ajina']
+  return (
+    <div>
+      <div>
+        <h1 className='bg-red-400 text-white rounded-xl'>Vendor Portal Tabs</h1>
+        {
+          name.map((item) => (
+            <Card name={item} />
+          ))
+        }
+        <h1>{count}</h1>
+        <button onClick={hello}>Click Me</button>
+      </div>
+    </div>
+  );
+}
+
+
+export default App;
+
+
+---------------------------BG Changer -----------------------------
+import './index.css'
+import Card from './components/Card';
+import { useState } from 'react';
+
+function App() {
+  const [clr,setClr]=useState('')
+    const changeClr = (color) => {
+    setClr(color);
+        document.body.style.backgroundColor = color;
+  }
+  return (
+    <div>
+      <button onClick={()=>changeClr('red')}>Red</button>
+      <button onClick={()=>changeClr('green')}>Green</button>
+    </div>
+  );
+}
+export default App;
+
+-----------------------------------Bg Changer 2 -------------------------------------------
+
+import './index.css'
+import Card from './components/Card';
+import { useState } from 'react';
+
+function App() {
+  const [color,setColor]=useState('olive')
+
+  // const changeColor=((item)=>{
+  //   setColor(item)
+  //   document.body.style.backgroundColor=item
+  // })
+  return (
+    <div className='w-full h-screen duration-200' style={{ backgroundColor: color }}>
+
+      <div className='fixed flex flex-wrap justify-center bottom-12 inset-x-0 px-2'>
+        <div className='flex flex-wrap justify-center gap-3 shadow-lg bg-white px-2 py-2 rounded-xl '>
+          <button className='outline-none px-4 py-1 rounded-full text-white shadow-lg' style={{backgroundColor:'red'}} onClick={()=>setColor('red')} >Red</button>
+          <button className='outline-none px-4 py-1 rounded-full text-white shadow-lg' style={{backgroundColor:'yellow'}} onClick={()=>setColor('yellow')} >Red</button>
+          <button className='outline-none px-4 py-1 rounded-full text-white shadow-lg' style={{backgroundColor:'green'}}  >Red</button>
+          <button className='outline-none px-4 py-1 rounded-full text-white shadow-lg' style={{backgroundColor:'pink'}} >Red</button>
+          <button className='outline-none px-4 py-1 rounded-full text-white shadow-lg' style={{backgroundColor:'aqua'}} >Red</button>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+export default App;
+
+
+
+--------------------------password generator ---------------------------------------
+import './index.css'
+import { useCallback, useEffect, useState,useRef } from 'react';
+
+function App() {
+  const [color,setColor]=useState('gray')
+  const [length,setLength]=useState(8)
+  const [charAllowed,setCharAllowed]=useState(false);
+  const [numberAllowed,setNumberAllowed]=useState(false);
+  const [password,setPassword]=useState("")
+
+  // useRef
+  const passwordRef =useRef(null)
+
+  const passwordGenerator =useCallback(()=>{
+    let pass=""
+    let str= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    if(numberAllowed) str+="0123456789"
+    if(charAllowed) str+="!@#$%^&*()"
+    for(let i=1;i<=length;i++){
+      let char=Math.floor(Math.random()*str.length+1)
+      pass+=str.charAt(char)
+    }
+    setPassword(pass)
+  },[length,charAllowed,numberAllowed,setPassword])
+
+  const copyPassword=useCallback(()=>{
+    console.log(passwordRef.current.value)
+    window.navigator.clipboard.writeText(password)
+  },[password])
+
+  useEffect(passwordGenerator,[length,charAllowed,numberAllowed,setPassword])
+  
+  return (
+    // <div className='w-full h-screen duration-200' style={{ backgroundColor: color }}>
+      
+    <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 text-orange-500'>
+      <h1 className='text-4xl text-center text-white  p-4'>Password Generator</h1>
+      <div className=' shadow rounded-lg overflow-hidden mb-4'>
+        {/* <h1 className='text-4xl text-center text-white  m-4'>Password Generator</h1> */}
+        <input type="text" value={password} className='outline-none w-full py-1 px-3' placeholder='Password' readonly ref={passwordRef}/>
+        <button className='outline-none bg-blue-700 text-white px-10 py-1 shrink-0' onClick={copyPassword}>Copy Password</button>
+        <div className="text-sm gap-x-2 ">
+
+          {/* Length */}
+          <div className="flex  items-center gap-x-6 ">
+            <input type="range" min={6} max={100} value={length} className='cursor-pointer' onChange={(e) => { setLength(e.target.value) }} />
+            <label htmlFor="">Length : {length}</label>
+          </div>
+
+          {/* Number */}
+          <div className="flex items-center gap-x-6 ">
+            <input type="checkbox" defaultChecked={numberAllowed} id='numberInput' onChange={() => { setNumberAllowed(prev => prev = !prev) }} />
+            <label htmlFor="numberInput"> Numbers </label>
+          </div>
+
+          {/* Character */}
+          <div className="flex items-center gap-x-6 ">
+            <input type="checkbox" defaultChecked={charAllowed} id='characterInput' onChange={() => { setCharAllowed(prev => prev = !prev) }} />
+            <label htmlFor="characterInput"> Character </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  // </div>
+  );
+}
+export default App;
+
+
+--------------------------------------------Currency convertor ------------------------------
+
+
+
